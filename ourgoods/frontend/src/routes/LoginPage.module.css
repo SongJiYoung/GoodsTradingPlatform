@@ -1,0 +1,51 @@
+@value makerShadow,makerLightLemon,makerWhite,makerLightPink, makerOrange,makerBlack from '../common/colors.css';
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+section {
+  width: 95%;
+  max-width: 30rem;
+  border-radius: 6px;
+  background-color: makerLightPink;
+  box-shadow: makerShadow;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 6px;
+}
+
+.input {
+  background-color: makerWhite;
+  opacity: 0.6;
+  border-radius: 6px;
+  border: 1px solid white;
+  width: 80%;
+  text-align: left;
+  padding: 0.25rem;
+  margin: 0.5rem;
+}
+.actions {
+  margin: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+button {
+  margin: 1rem;
+}
+
+.register {
+  margin: 1rem;
+  background-color: transparent;
+  color: makerBlack;
+  border: none;
+  padding: 0.15rem 1.5rem;
+  font-size: 0.8rem;
+}
+
+.register:hover {
+  background-color: transparent;
+  color: makerOrange;
+}
