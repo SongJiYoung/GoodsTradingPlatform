@@ -1,0 +1,49 @@
+@value makerShadow,makerWhite from '../common/colors.css';
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+section {
+  max-width: 35rem;
+  margin: 1rem;
+  width: 95%;
+  height: 75vh;
+  background-color: makerLightPink;
+  padding: 3em;
+  border-radius: 10px;
+  box-shadow: makerShadow;
+}
+
+h3 {
+  text-align: center;
+  margin: 2rem;
+}
+.input {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  width: 80%;
+  opacity: 0.6;
+  border-radius: 6px;
+  background-color: makerWhite;
+  box-shadow: makerShadow;
+  border: none;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button {
+  margin: 1rem;
+}
+
+.section {
+  border-radius: 6px;
+  background-color: makerLightLemon;
+  box-shadow: makerShadow;
+  padding: 1rem;
+  text-align: center;
+}
