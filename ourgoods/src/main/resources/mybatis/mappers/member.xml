@@ -5,24 +5,28 @@
 
 <mapper namespace="com.ourgoods.user.dao.MemberDAO">
    <resultMap id="memResult" type="userVO">
-      <result property="id" column="id" />
-      <result property="pwd" column="pwd" />
-      <result property="name" column="name" />
-      <result property="email" column="email" />
-      <result property="joinDate" column="joinDate" />
+      <result property="code" column="user_code" />
+      <result property="id" column="user_id" />
+      <result property="pw" column="user_pw" />
+      <result property="name" column="user_name" />
+      <result property="email" column="user_email" />
+      <result property="phone" column="user_phone" />
+      <result property="date" column="user_created" />
+      <result property="updated" column="user_updated" />
+      <result property="tcode" column="town_code" />
+      <result property="gcode" column="grade_code" />
    </resultMap> 
- 
- 
+     
    <select id="selectAllMemberList" resultMap="memResult"   >
       <![CDATA[
-        select * from t_member order by joinDate desc			
+        select * from usertbl order by user_created desc			
       ]]>
    </select>
 
-   <insert id="insertMember"  parameterType="userVO">
+   <insert id="insertMember"  parameterType="userVO" useGeneratedKeys="true" keyProperty="code">
 		<![CDATA[
-		 insert into t_member(id,pwd, name, email)
-		 values(#{id}, #{pwd}, #{name}, #{email})
+		 insert into usertbl (user_id, user_pw, user_name, user_email, user_phone, town_code)
+		 values(#{id}, #{pw}, #{name}, #{email}, #{phone}, #{tcode})
 		]]>      
 	</insert>
 	
@@ -52,8 +56,8 @@
   
   <select id="checkById"  resultType="int" parameterType="String">
 	<![CDATA[
-		SELECT COUNT(*) FROM t_member 
-		WHERE id = #{id}
+		SELECT COUNT(*) FROM usertbl 
+		WHERE user_id = #{id}
 	]]>
   </select>
 </mapper>

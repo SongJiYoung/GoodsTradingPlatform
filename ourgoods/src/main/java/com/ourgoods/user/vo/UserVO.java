@@ -6,19 +6,37 @@ import org.springframework.stereotype.Component;
 
 @Component("userVO")
 public class UserVO {
+	private String code;
 	private String id;
 	private String pw;
 	private String name;
 	private int grade;
 	private String email;
-	private String email2;
 	private String phone;
 	private Date date;
 	private Date updated;
 	private int tcode;
+	private int gcode;
 	
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	public UserVO() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	public int getGcode() {
+		return gcode;
+	}
+	
+	public void setGcode(int gcode) {
+		this.gcode = gcode;
 	}
 
 	public String getId() {
@@ -59,14 +77,6 @@ public class UserVO {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getEmail2() {
-		return email2;
-	}
-
-	public void setEmail2(String email2) {
-		this.email2 = email2;
 	}
 
 	public String getPhone() {
