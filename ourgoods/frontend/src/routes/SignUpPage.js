@@ -1,84 +1,138 @@
-import React, { useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import AuthApis from '../api/AuthApis';
 import Button from '../components/common/Button';
 import styles from './SignUpPage.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpPage = () => {
-  const userIdRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
-  const formRef = useRef();
-  const userNameRef = useRef();
-  const userEmailRef = useRef();
-  const phoneNumberRef = useRef();
-  const userTownRef = useRef();
+  const [userRegInfo, SetUserRegInfo] = useState({
+    id: '',
+    password: '',
+    passwordConfirm: '',
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    usableId: false,
+    usableEmail: false,
+    emailAuth: '',
+  });
+  const [checkPassword, SetCheckPassword] =
+    useState('패스워드 중복확인을 해주세요');
 
-  //회원가입 데이터 전송
-  // const register = async ({
-  //   userId,
-  //   password,
-  //   userName,
-  //   userEmail,
-  //   phoneNumber,
-  //   userTown,
-  // }) => {
-  //   try {
-  //     const response = await AuthApis.postRegister({
-  //       userId,
-  //       password,
-  //       userName,
-  //       userEmail,
-  //       phoneNumber,
-  //       userTown,
-  //     });
-  //     if (response.data.regSuccess) {
-  //       setTryRegState(true);
-  //       setRegMessage(response.data.message);
-  //     } else {
-  //       setTryRegState(true);
-  //       setRegMessage(response.data.message);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  useEffect(() => {
+    passwordCheck();
+  }, [userRegInfo]);
 
-  const onSubmit = (event) => {
+  const navigator = useNavigate();
+
+  const handleInput = (event) => {
+    SetUserRegInfo((prevState) => {
+      return {
+        ...prevState,
+        [event.target.name]: event.target.value,
+      };
+    });
+  };
+
+  const passwordCheck = () => {
+    const { password, passwordConfirm } = userRegInfo;
+    if (password.length < 1 || passwordConfirm < 1) {
+      SetCheckPassword('패스워드 중복확인을 해주세요');
+    } else if (password === passwordConfirm) {
+      SetCheckPassword('패스워드 일치✅');
+    } else {
+      SetCheckPassword('패스워드 불일치❌');
+    }
+  };
+
+  const idCheck = async () => {
+    const { id } = userRegInfo;
+    console.log(id);
+    try {
+      const response = await AuthApis.idCheck({ id });
+      ///console.log(response.data)///////////////////////response값 체크해봐야함
+      if (response.data === 'success') {
+        alert('사용 가능한 아이디 입니다.');
+        SetUserRegInfo((prevState) => {
+          return {
+            ...prevState,
+            usableId: true,
+          };
+        });
+      } else {
+        alert('이미 사용중인 아이디 입니다.');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const emailCheck = async () => {
+    const { emailAuth } = userRegInfo;
+    try {
+      const response = await AuthApis.emailCheck();
+      if (response.data) {
+        if (response.data === emailAuth)
+          SetUserRegInfo((prevState) => {
+            return { ...prevState, emailAuth: true };
+          });
+        /////response.data =input 그냥숫자4개 스트링4자면 인증완료
+        console.log(response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const register = async (event) => {
     event.preventDefault();
-    const userRegisterInfo = {
-      userId: userIdRef.current.value || '',
-      password: passwordRef.current.value || '',
-      passwordConfirm: passwordConfirmRef.current.value || '',
-      userName: userNameRef.current.value || '',
-      userEmail: userEmailRef.current.value || '',
-      phoneNumber: phoneNumberRef.current.value || '',
-      userTown: userTownRef.current.value || '',
-    };
-    formRef.current.reset();
-    console.log(userRegisterInfo);
-    //register(userRegisterInfo)
+    const { id, password, name, email, phone, address, usableId, usableEmail } =
+      userRegInfo;
+
+    if (!usableId) {
+      alert('아이디 중복확인을 해주세요');
+    } else if (!usableEmail) {
+      alert('이메일 인증을 해주세요');
+    } else if (!id || !password || !name || !email || !phone || address) {
+      alert('모든 항목을 작성 해주세요');
+    } else {
+      try {
+        const response = await AuthApis.postRegister(userRegInfo);
+        if (response.data) {
+          /////// console.log(response);//////////////////////여기 리스폰스값체크필요
+          navigator('/');
+        } else {
+          /////////리스폰스값에따라 처리
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
     <div className={styles.container}>
       <section>
         <h3>회원가입</h3>
-        <form className={styles.form} onSubmit={onSubmit} ref={formRef}>
+        <form className={styles.form} onSubmit={register}>
           <input
             className={styles.input}
-            autoComplete="userid"
-            name="userid"
+            autoComplete="id"
+            name="id"
             placeholder="아이디"
-            ref={userIdRef}
+            onChange={handleInput}
             required
           />
+          <Button className={styles.button} onClick={idCheck}>
+            중복확인
+          </Button>
           <input
             className={styles.input}
             autoComplete="new-password"
             name="password"
             placeholder="비밀번호"
             type="password"
-            ref={passwordRef}
+            onChange={handleInput}
             required
           />
           <input
@@ -87,43 +141,48 @@ const SignUpPage = () => {
             name="passwordConfirm"
             placeholder="비밀번호 확인"
             type="password"
-            ref={passwordConfirmRef}
+            onChange={handleInput}
             required
           />
+          <span>비밀번호확인: {checkPassword}</span>
           <input
             className={styles.input}
-            autoComplete="username"
-            name="username"
+            autoComplete="name"
+            name="name"
             placeholder="이름"
-            ref={userNameRef}
+            onChange={handleInput}
             required
           />
           <input
             className={styles.input}
-            autoComplete="useremail"
-            name="useremail"
+            autoComplete="email"
+            name="email"
             placeholder="이메일"
             type="email"
-            ref={userEmailRef}
+            onChange={handleInput}
             required
           />
+          <Button className={styles.button} onClick={emailCheck}>
+            메일 인증
+          </Button>
+          <input className={styles.input} placeholder="인증번호" required />
           <input
             className={styles.input}
-            autoComplete="phonenumber"
-            name="phonenumber"
+            autoComplete="phone"
+            name="phone"
             placeholder="전화번호"
-            ref={phoneNumberRef}
+            onChange={handleInput}
             required
           />
           <input
             className={styles.input}
-            autoComplete="userTown"
-            name="userTown"
-            placeholder="도시"
-            ref={userTownRef}
+            autoComplete="address"
+            name="address"
+            placeholder="주소"
+            onChange={handleInput}
           />
           <Button className={styles.button} type="submit">
-            다음
+            회원가입
           </Button>
         </form>
       </section>

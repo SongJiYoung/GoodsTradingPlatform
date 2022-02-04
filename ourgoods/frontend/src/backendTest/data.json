@@ -1,0 +1,24 @@
+{
+  "member": {
+    "memberIdCheck": [{ "id": "aaa" }],
+    "addMembers": [
+      {
+        "id": "bbb",
+        "password": "",
+        "name": "",
+        "email": "",
+        "phone": "",
+        "address": ""
+      },
+      {
+        "id": "ccc",
+        "password": "",
+        "name": "",
+        "email": "",
+        "phone": "",
+        "address": ""
+      }
+    ],
+    "mailCheck": [{ "key": "1234" }]
+  }
+}

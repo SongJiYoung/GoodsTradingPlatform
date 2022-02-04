@@ -1,16 +1,15 @@
-import React from "react";
-import { Grid } from "../elements";
-import styled, { createGlobalStyle } from "styled-components";
+import React from 'react';
+import { Grid } from '../elements';
+import styled, { createGlobalStyle } from 'styled-components';
 import Logo from '../img/ourGoods.svg';
 import SearchGlass from '../img/search.svg';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 function Header() {
-  
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(event.target.value);
-  }
+  };
 
   return (
     <>
@@ -25,25 +24,25 @@ function Header() {
       >
         <Grid is_flex padding="5px 0px" width="1024px" margin="auto">
           <Grid is_start maxwidth="700px">
-          <Link to={`/`}>
-            <img
-              width="150px"
-              height="40px"
-              src={Logo}
-              alt="굿즈 로고" />
-          </Link>
+            <Link to={`/`}>
+              <img width="150px" height="40px" src={Logo} alt="굿즈 로고" />
+            </Link>
             <InputWrap>
               <Grid is_flex>
                 <form>
-                  <Input placeholder="카테고리, 물품명 등을 검색하세요" onChange={handleSubmit}></Input>
+                  <Input
+                    placeholder="카테고리, 물품명 등을 검색하세요"
+                    onChange={handleSubmit}
+                  ></Input>
                   <SearchButton>
-                  <img
-                      style={{ marginRight: "10px" }}
+                    <img
+                      style={{ marginRight: '10px' }}
                       width="20px"
                       height="20px"
                       src={SearchGlass}
-                      alt="검색 돋보기" />
-                    </SearchButton>
+                      alt="검색 돋보기"
+                    />
+                  </SearchButton>
                 </form>
               </Grid>
             </InputWrap>
@@ -54,13 +53,13 @@ function Header() {
           <Link to={`/post`} style={{ textDecoration: 'none' }}>
             <Menu>Post</Menu>
           </Link>
-          <Link to={`/accounts/my_page`} style={{ textDecoration: 'none' }}>
+          <Link to={`/member/my_page`} style={{ textDecoration: 'none' }}>
             <Menu>MyPage</Menu>
           </Link>
-          <Link to={`/accounts/login`}>
+          <Link to={`/member/login`}>
             <Button>Log In</Button>
           </Link>
-          <Link to={`/accounts/sign_up`}>
+          <Link to={`/member/sign_up`}>
             <Button>Sign Up</Button>
           </Link>
         </Grid>
@@ -75,7 +74,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
   }
-`
+`;
 const SearchButton = styled.button`
   background-color: transparent;
   border: hidden;
@@ -83,7 +82,7 @@ const SearchButton = styled.button`
 
 const InputWrap = styled.div`
   border-radius: 5px;
-  border: solid 1px #E9ECEF;
+  border: solid 1px #e9ecef;
   text-decoration: none;
   height: 40px;
   box-sizing: border-box;
@@ -99,8 +98,8 @@ const Input = styled.input`
   margin: auto;
   -webkit-appearance: none;
   background-color: transparent;
-  
-  &::placeholder{
+
+  &::placeholder {
     color: #999999;
   }
 `;
@@ -111,7 +110,7 @@ const Menu = styled.div`
   color: #333333;
   font-size: 16px;
 
-  &:hover{
+  &:hover {
     text-decoration: underline;
   }
 `;
@@ -119,7 +118,7 @@ const Menu = styled.div`
 const Button = styled.button`
   width: 90px;
   border-radius: 5px;
-  border: solid 1px #E9ECEF;
+  border: solid 1px #e9ecef;
   box-sizing: border-box;
   text-decoration: none;
   display: inline-block;
@@ -132,8 +131,8 @@ const Button = styled.button`
   background-color: #ffffff;
   color: #333333;
 
-  &:hover{
-    background-color: #EC9A71;
+  &:hover {
+    background-color: #ec9a71;
     color: #ffffff;
   }
 `;

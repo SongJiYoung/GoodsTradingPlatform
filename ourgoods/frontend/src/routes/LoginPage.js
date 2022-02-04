@@ -1,13 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../components/common/Button';
 import styles from './LoginPage.module.css';
 //import AuthApis from '../api/AuthApis';
 
 const LoginPage = () => {
-  const userIdRef = useRef();
-  const passwordRef = useRef();
-  const formRef = useRef();
+  const [userLoginInfo, SetUserLoginInfo] = useState({
+    userId: '',
+    password: '',
+  });
+  const [input, setInput] = useState('');
 
   //postLogin 데이터 전송
   //const login = async ({ userId, userPassword }) => {
@@ -38,29 +40,31 @@ const LoginPage = () => {
   //     }
   //   });
   // }, []);
-
+  const handleInput = (event) => {
+    SetUserLoginInfo((prevState) => {
+      return {
+        ...prevState,
+        [event.target.name]: event.target.value,
+      };
+    });
+  };
   const onSubmit = (event) => {
     event.preventDefault();
-    const userAuthInfo = {
-      userId: userIdRef.current.value || '',
-      password: passwordRef.current.value || '',
-    };
-    console.log(userAuthInfo);
-    formRef.current.reset();
-    //login(userAuthInfo)
+    console.log(userLoginInfo);
+    //login(userLoginInfo)
   };
 
   return (
     <div className={styles.container}>
       <section>
         <h3>로그인</h3>
-        <form onSubmit={onSubmit} ref={formRef}>
+        <form onSubmit={onSubmit}>
           <input
             className={styles.input}
             autoComplete="userid"
-            name="userid"
+            name="userId"
             placeholder="아이디"
-            ref={userIdRef}
+            onChange={handleInput}
           />
           <input
             className={styles.input}
@@ -68,7 +72,7 @@ const LoginPage = () => {
             name="password"
             placeholder="비밀번호"
             type="password"
-            ref={passwordRef}
+            onChange={handleInput}
           />
           <div className={styles.actions}>
             <Button type="submit">로그인</Button>

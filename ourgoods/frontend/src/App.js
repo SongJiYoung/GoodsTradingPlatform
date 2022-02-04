@@ -8,7 +8,7 @@ import WritePostPage from './routes/WritePostPage';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
 import Home from './routes/Home';
-import AccountRoutes from './routes/accounts/AccountRoutes';
+import MemberRoutes from './routes/member/MemberRoutes';
 
 function App() {
   const [user, setUser] = useState(null); //사용자정보관리
@@ -27,7 +27,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/post" element={<PostPage />} />
-          <Route path="/accounts/*" element={<AccountRoutes />} />
+          <Route path="/member/*" element={<MemberRoutes />} />
           <Route path="/write" element={<WritePostPage />} />
           <Route path="/@:username">
             <Route index element={<PostListPage />} />
