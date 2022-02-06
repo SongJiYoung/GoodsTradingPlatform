@@ -13,7 +13,9 @@
       <result property="phone" column="user_phone" />
       <result property="date" column="user_created" />
       <result property="updated" column="user_updated" />
-      <result property="tcode" column="town_code" />
+      <result property="addr1" column="user_addr1" />
+      <result property="addr2" column="user_addr2" />
+      <result property="addr3" column="user_addr3" />
       <result property="gcode" column="grade_code" />
    </resultMap> 
      
@@ -25,8 +27,8 @@
 
    <insert id="insertMember"  parameterType="userVO" useGeneratedKeys="true" keyProperty="code">
 		<![CDATA[
-		 insert into usertbl (user_id, user_pw, user_name, user_email, user_phone, town_code)
-		 values(#{id}, #{pw}, #{name}, #{email}, #{phone}, #{tcode})
+		 insert into usertbl (user_id, user_pw, user_name, user_email, user_phone, user_addr1, user_addr2, user_addr3)
+		 values(#{id}, #{pw}, #{name}, #{email}, #{phone}, #{addr1}, #{addr2}, #{addr3})
 		]]>      
 	</insert>
 	

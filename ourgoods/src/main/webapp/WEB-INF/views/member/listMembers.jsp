@@ -23,7 +23,9 @@ request.setCharacterEncoding("UTF-8");
 			<td><b>전화번호</b></td>
 			<td><b>가입일</b></td>
 			<td><b>최근 수정일 </b></td>
-			<td><b>도시 코드</b></td>
+			<td><b>우편번호</b></td>
+			<td><b>일반주소</b></td>
+			<td><b>상세주소</b></td>
 			<td><b>사용자 레벨</b></td>
 
 			<td><b>삭제</b></td>
@@ -39,10 +41,11 @@ request.setCharacterEncoding("UTF-8");
 				<td>${member.phone}</td>
 				<td>${member.date}</td>
 			    <td>${member.updated}</td>
-				<td>${member.tcode}</td>
+				<td>${member.addr1}</td>
+				<td>${member.addr2}</td>
+				<td>${member.addr3}</td>
 				<td>${member.gcode}</td>
-				<td><a
-					href="${contextPath}/member/removeMember.do?id=${member.code}">삭제하기</a></td>
+				<td><a href="${contextPath}/member/removeMember.do?id=${member.code}">삭제하기</a></td>
 			</tr>
 		</c:forEach>
 	</table>

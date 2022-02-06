@@ -15,9 +15,38 @@ public class UserVO {
 	private String phone;
 	private Date date;
 	private Date updated;
-	private int tcode;
+	private String addr1;
+	private String addr2;
+	private String addr3;
 	private int gcode;
 	
+	public UserVO() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public String getAddr1() {
+		return addr1;
+	}
+
+	public void setAddr1(String addr1) {
+		this.addr1 = addr1;
+	}
+
+	public String getAddr2() {
+		return addr2;
+	}
+
+	public void setAddr2(String addr2) {
+		this.addr2 = addr2;
+	}
+
+	public String getAddr3() {
+		return addr3;
+	}
+
+	public void setAddr3(String addr3) {
+		this.addr3 = addr3;
+	}
 
 	public String getCode() {
 		return code;
@@ -25,10 +54,6 @@ public class UserVO {
 
 	public void setCode(String code) {
 		this.code = code;
-	}
-
-	public UserVO() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public int getGcode() {
@@ -103,14 +128,4 @@ public class UserVO {
 		this.updated = updated;
 	}
 
-	public int getTcode() {
-		return tcode;
-	}
-
-	public void setTcode(int tcode) {
-		this.tcode = tcode;
-	}
-	
-	
-	
 }
