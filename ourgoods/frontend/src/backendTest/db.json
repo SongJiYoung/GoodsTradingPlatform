@@ -1,0 +1,46 @@
+{
+  "addMembers": [
+    {
+      "id": "ppp",
+      "password": "1153abc@$",
+      "name": "alan smith",
+      "email": "alan@gmail.com",
+      "phone": "01012345667",
+      "address": "Korea"
+    },
+    {
+      "id": "asd",
+      "password": "1234",
+      "name": "asdf",
+      "email": "a@gmail.com",
+      "phone": "123",
+      "address": ""
+    },
+    {
+      "id": "s",
+      "password": "1234",
+      "name": "as",
+      "email": "a@gmail.com",
+      "phone": "1234",
+      "address": ""
+    }
+  ],
+  "memberIdCheck": [
+    {
+      "id": "ppp"
+    },
+    {
+      "id": "qqq"
+    }
+  ],
+  "mailCheck": [
+    {
+      "auth:": "success"
+    }
+  ],
+  "members": [
+    {
+      "id": "wowo"
+    }
+  ]
+}
