@@ -23,6 +23,14 @@
       "email": "a@gmail.com",
       "phone": "1234",
       "address": ""
+    },
+    {
+      "id": "sdf",
+      "password": "1234",
+      "name": "sdaf",
+      "email": "a@gmail.com",
+      "phone": "12312",
+      "address": "123213"
     }
   ],
   "memberIdCheck": [
