@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import AuthApis from '../api/AuthApis';
+import AuthApis from '../../api/AuthApis';
 import styles from './SignUpPage.module.css';
+import DaumPostHook from './DaumPostHook';
 import { useNavigate } from 'react-router-dom';
 
 const SignUpPage = () => {
@@ -11,7 +12,9 @@ const SignUpPage = () => {
     name: '',
     email: '',
     phone: '',
+    zonecode: '',
     address: '',
+    detailAddress: '',
   });
   const [userRegAuthInfo, setUserRegAuthInfo] = useState({
     usableId: false,
@@ -29,7 +32,8 @@ const SignUpPage = () => {
 
   const { usableId, usableEmail, usablePassword } = userRegAuthInfo;
   const { inputId, inputEmail } = defaultRender;
-  const { id, password, name, email, phone, address } = userRegInfo;
+  const { id, password, name, email, phone, zonecode, address, detailAddress } =
+    userRegInfo;
 
   useEffect(() => {
     passwordCheck();
@@ -42,6 +46,21 @@ const SignUpPage = () => {
       return {
         ...prevState,
         [event.target.name]: event.target.value,
+      };
+    });
+  };
+
+  const handleAddressData = (data) => {
+    setUserRegInfo((prevState) => {
+      return {
+        ...prevState,
+        zonecode: data.zonecode,
+      };
+    });
+    setUserRegInfo((prevState) => {
+      return {
+        ...prevState,
+        address: data.address,
       };
     });
   };
@@ -64,9 +83,9 @@ const SignUpPage = () => {
   };
 
   const idCheck = async () => {
-    const { id } = userRegInfo;
+    // const { id } = userRegInfo;
     try {
-      const response = await AuthApis.idCheck({ id });
+      const response = await AuthApis.idCheck(id);
       ///console.log(response.data)///////////////////////response값 String
       setDefaultRender((prevState) => {
         return { ...prevState, inputId: true };
@@ -84,10 +103,11 @@ const SignUpPage = () => {
     }
   };
   const checkEmail = async () => {
-    const { email } = userRegInfo;
+    // const { email } = userRegInfo;
     try {
       const response = await AuthApis.emailCheck(email);
       if (response.data) {
+        console.log('이메일인증번호서버리턴값', response.data);
         setUserRegAuthInfo((prevState) => {
           return { ...prevState, emailAuthNumber: response.data };
         });
@@ -108,7 +128,6 @@ const SignUpPage = () => {
       return { ...prevState, inputEmail: true };
     });
     if (emailAuthNumberString === userEmailAuthInput) {
-      console.log('haha');
       setUserRegAuthInfo((prevState) => {
         return { ...prevState, usableEmail: true };
       });
@@ -122,18 +141,25 @@ const SignUpPage = () => {
 
   const register = async (event) => {
     event.preventDefault();
+    console.log(userRegInfo);
 
     if (!usableId) {
     } else if (!usableEmail) {
     } else if (!usablePassword) {
-    } else if (!id || !password || !name || !email || !phone || !address) {
+    } else if (
+      !id ||
+      !password ||
+      !name ||
+      !email ||
+      !phone ||
+      !detailAddress
+    ) {
     } else {
       try {
-        console.log(userRegAuthInfo);
-        console.log(userRegInfo);
         const response = await AuthApis.postRegister(userRegInfo);
+        console.log('회원가입response', response); //////////////////////여기 리스폰스값체크필요
+        navigator('/member/login');
         if (response.data) {
-          /////// console.log(response);//////////////////////여기 리스폰스값체크필요
           // navigator('/member/login');
         } else {
           /////////리스폰스값에따라 처리
@@ -295,11 +321,11 @@ const SignUpPage = () => {
           <ul className={styles.container}>
             <li className={`${styles.item} ${styles.center}`}>주소</li>
             <li className={styles.item}>
-              <input
-                type="text"
-                placeholder="주소를 입력하세요."
-                name="address"
-                onChange={handleInput}
+              <DaumPostHook
+                handleAddressInput={handleInput}
+                handleAddressData={handleAddressData}
+                zonecode={zonecode}
+                address={address}
               />
             </li>
             <li className={styles.item}></li>
@@ -316,9 +342,13 @@ const SignUpPage = () => {
           <ul className={styles.container}>
             <li className={`${styles.item} ${styles.center}`}></li>
             <li className={styles.item}>
-              {(!id || !password || !name || !email || !phone || !address) && (
-                <span>모든 항목을 작성해주세요</span>
-              )}
+              {(!id ||
+                !password ||
+                !name ||
+                !email ||
+                !phone ||
+                !zonecode ||
+                !detailAddress) && <span>❌모든 항목을 작성해주세요</span>}
             </li>
             <li className={styles.item}></li>
           </ul>
