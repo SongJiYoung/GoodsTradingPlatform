@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import AuthApis from '../../api/AuthApis';
-import styles from './SignUpPage.module.css';
-import DaumPostHook from './DaumPostHook';
 import { useNavigate } from 'react-router-dom';
+import styles from './SignUpPage.module.css';
+import AuthApis from '../../api/AuthApis';
+import DaumPostHook from './DaumPostHook';
 
 const SignUpPage = () => {
   const [userRegInfo, setUserRegInfo] = useState({
@@ -83,7 +83,6 @@ const SignUpPage = () => {
   };
 
   const idCheck = async () => {
-    // const { id } = userRegInfo;
     try {
       const response = await AuthApis.idCheck(id);
       ///console.log(response.data)///////////////////////response값 String
