@@ -3,12 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import AuthApis from '../api/AuthApis';
 
-const LoginPage = ({ userInfoHandler, userInfo }) => {
+const LoginPage = ({ userInfoHandler }) => {
   const [userLoginInput, setUserLoginInput] = useState({
     id: '',
     password: '',
   });
-  const { id, auth } = userInfo;
+  const [loginFail, setLoginFail] = useState(null);
+
   const { userIdInput, password } = userLoginInput;
   const navigator = useNavigate();
 
@@ -16,32 +17,17 @@ const LoginPage = ({ userInfoHandler, userInfo }) => {
     try {
       const response = await AuthApis.postLogin({ userIdInput, password });
       console.log('postLoginResponse값', response);
-      if (response.data.auth) {
+
+      if (response.data.isLogon) {
         userInfoHandler(response);
-        // navigator('/');
-        // setLoginFailMessage(response.data.message);
+        navigator('/');
       } else {
-        // setLoginFailMessage('');
-        // localStorage.setItem('token', response.data.accessToken);
+        setLoginFail(true);
       }
     } catch (error) {
       console.log(error);
     }
   };
-
-  // 새로고침시 로그인 유지 로직/redux가 없으므로 app에서해야함 백엔드 res값 확인필요
-  // const getLoginAxios = async () => {
-  //   try {
-  //     const userData = await Apis.getLogin().then((response) => {
-  //       userInfoHandler(response);
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   getLoginAxios();
-  // }, []);
 
   const handleLoginInput = (event) => {
     setUserLoginInput((prevState) => {
@@ -98,6 +84,18 @@ const LoginPage = ({ userInfoHandler, userInfo }) => {
               <Link className={styles.link} to="/member/sign_up">
                 회원가입
               </Link>
+            </li>
+            <li className={styles.item}></li>
+          </ul>
+          <ul className={styles.container}>
+            <li className={styles.item}></li>
+            <li className={`${styles.item} ${styles.link}`}>
+              {loginFail && (
+                <span className={styles.span}>
+                  이메일 또는 비밀번호를 다시 확인하세요. 등록되지 않은
+                  이메일이거나, 이메일 또는 비밀번호를 잘못 입력하셨습니다.
+                </span>
+              )}
             </li>
             <li className={styles.item}></li>
           </ul>

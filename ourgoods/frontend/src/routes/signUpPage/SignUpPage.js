@@ -29,40 +29,33 @@ const SignUpPage = () => {
     inputId: false,
     inputEmail: false,
   });
-
-  const { usableId, usableEmail, usablePassword } = userRegAuthInfo;
-  const { inputId, inputEmail } = defaultRender;
-  const { id, password, name, email, phone, zonecode, address, detailAddress } =
-    userRegInfo;
-
   useEffect(() => {
     passwordCheck();
   }, [userRegInfo]);
 
   const navigator = useNavigate();
 
+  const { usableId, usableEmail, usablePassword } = userRegAuthInfo;
+  const { inputId, inputEmail } = defaultRender;
+  const { id, password, name, email, phone, zonecode, address, detailAddress } =
+    userRegInfo;
+
   const handleInput = (event) => {
-    setUserRegInfo((prevState) => {
-      return {
-        ...prevState,
-        [event.target.name]: event.target.value,
-      };
-    });
+    setUserRegInfo((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   const handleAddressData = (data) => {
-    setUserRegInfo((prevState) => {
-      return {
-        ...prevState,
-        zonecode: data.zonecode,
-      };
-    });
-    setUserRegInfo((prevState) => {
-      return {
-        ...prevState,
-        address: data.address,
-      };
-    });
+    setUserRegInfo((prevState) => ({
+      ...prevState,
+      zonecode: data.zonecode,
+    }));
+    setUserRegInfo((prevState) => ({
+      ...prevState,
+      address: data.address,
+    }));
   };
 
   const passwordCheck = () => {
@@ -156,10 +149,10 @@ const SignUpPage = () => {
     } else {
       try {
         const response = await AuthApis.postRegister(userRegInfo);
-        console.log('회원가입response', response); //////////////////////여기 리스폰스값체크필요
+        console.log('회원가입response', response); //여기 리스폰스값체크필요// 리스폰스 없이 진행하기로함
         navigator('/member/login');
         if (response.data) {
-          // navigator('/member/login');
+          navigator('/member/login');
         } else {
           /////////리스폰스값에따라 처리
         }

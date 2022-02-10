@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PostPage from './routes/PostPage';
 import PostListPage from './routes/PostListPage';
@@ -10,31 +10,43 @@ import MemberRoutes from './routes/member/MemberRoutes';
 
 function App() {
   const [userInfo, setUserInfo] = useState({
-    id: '',
-    auth: false,
+    id: '', //server에서 온 유저 정보 저장
+    sessionId: '',
   });
+  const { id } = userInfo;
+
+  useEffect(() => {
+    const userInfoSave = JSON.parse(sessionStorage.getItem('userInfo'));
+    if (id === '') {
+      setUserInfo((prev) => ({ ...prev, ...userInfoSave }));
+    }
+  }, []);
+
+  useEffect(() => {
+    window.sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+  }, [id]);
+
   console.log('App state값', userInfo);
-  //사용자정보관리
-  // const authenticated = user != null; //인증여부저장
-  // authenticated = user != null;
-
-  //const login = ({ email, password }) => setUser(signIn({ email, password }));
-  //const logout = () => setUser(null);
-
   const userInfoHandler = (response) => {
-    setUserInfo((prevState) => {
-      return {
-        ...prevState,
-        auth: response.data.auth,
-        id: response.data.id,
-      };
-    });
+    setUserInfo((prevState) => ({
+      ...prevState,
+      id: response.data.id,
+      sessionId: response.data.sessionId,
+    }));
+  };
+
+  const onLogout = () => {
+    setUserInfo((prevState) => ({
+      ...prevState,
+      id: '',
+    }));
+    window.sessionStorage.clear();
   };
 
   return (
     <>
       <header>
-        <Header />
+        <Header userInfo={userInfo} onLogout={onLogout} />
       </header>
       <main>
         <Routes>
@@ -42,12 +54,7 @@ function App() {
           <Route path="/post" element={<PostPage />} />
           <Route
             path="/member/*"
-            element={
-              <MemberRoutes
-                userInfo={userInfo}
-                userInfoHandler={userInfoHandler}
-              />
-            }
+            element={<MemberRoutes userInfoHandler={userInfoHandler} />}
           />
           <Route path="/write" element={<WritePostPage />} />
           <Route path="/@:username">

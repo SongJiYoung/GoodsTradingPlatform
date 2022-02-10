@@ -5,42 +5,33 @@
   padding: 0;
   box-sizing: border-box;
 }
-ul,
-li {
-  list-style: none;
-}
-a {
-  text-decoration: none;
-  color: inherit;
-}
+
 .register {
   max-width: 35rem;
   margin: auto;
   width: 95%;
-  height: 75vh;
+  height: 80%;
   background: makerWhite;
   padding: 3em;
   margin: 0.3rem auto;
   border-radius: 10px;
   box-shadow: makerShadow;
-
-  padding: 15px 20px;
-
+  padding: 1rem;
   color: makerDarkBlue;
-  font-size: 14px;
+  font-size: 1rem;
   text-align: left;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 .register h3 {
-  font-size: 20px;
-  margin-bottom: 20px;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
   text-align: center;
 }
 .register input {
   width: 100%;
-  height: 40px;
+  height: 3rem;
   outline: none;
-  padding: 10px;
+  padding: 1rem;
   border: 1px solid #707070;
   transition: 0.3s;
 }
@@ -59,17 +50,16 @@ a {
 .register .flex .container {
   display: grid;
   grid-template-columns: 1fr 3fr 1fr;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 }
 .register .flex .container .item:first-child {
-  margin-right: 10px;
+  margin-right: 1rem;
 }
 .register .flex .container .item .check {
   height: 100%;
-  margin-left: 10px;
+  margin-left: 1rem;
   padding: 5px 15px;
   background: makerDarkBlue;
-
   color: white;
   font-size: 12px;
   transition: 0.3s;
@@ -79,13 +69,13 @@ a {
   color: makerDarkBlue;
 }
 .register .flex .container .item select {
-  height: 40px;
-  padding: 10px;
+  height: 3rem;
+  padding: 1rem;
   border: 1px solid makerDarkBlue;
 }
 .register .submit {
   width: 100%;
-  height: 40px;
+  height: 3rem;
   color: makerWhite;
   border: none;
   border: 1px solid makerDarkBlue;
@@ -97,65 +87,9 @@ a {
 }
 .register .submit:hover {
   width: 100%;
-  height: 40px;
+  height: 3rem;
   border: none;
   border: 1px solid makerDarkBlue;
   color: makerDarkBlue;
   background: makerWhite;
 }
-
-/* .container {
-  display: flex;
-  justify-content: center;
-}
-
-section {
-  max-width: 35rem;
-  margin: 1rem;
-  width: 95%;
-  height: 75vh;
-  background-color: makerLightPink;
-  padding: 3em;
-  border-radius: 10px;
-  box-shadow: makerShadow;
-}
-
-h3 {
-  text-align: center;
-  margin: 2rem;
-}
-.input {
-  margin: 0.5rem;
-  padding: 0.5rem;
-  width: 80%;
-  opacity: 0.6;
-  border-radius: 6px;
-  background-color: makermakerWhite;
-  box-shadow: makerShadow;
-  border: none;
-}
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.button {
-  margin: 1rem;
-}
-
-.section {
-  border-radius: 6px;
-  background-color: makerLightLemon;
-  box-shadow: makerShadow;
-  padding: 1rem;
-  text-align: center;
-}
-
-.flex_input_container {
-  display: flex;
-}
-
-.flex_input_item {
-  flex-basis: 1;
-} */
