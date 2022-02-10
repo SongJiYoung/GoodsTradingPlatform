@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ourgoods.user.dao.MemberDAO">
+   <resultMap id="memResult" type="userVO">
+      <result property="id" column="user_id" />
+      <result property="pw" column="user_pw" />
+      <result property="name" column="user_name" />
+      <result property="email" column="user_email" />
+      <result property="phone" column="user_phone" />
+      <result property="joinDate" column="user_created" />
+      <result property="zonecode" column="user_addr1" />
+      <result property="address" column="user_addr2" />
+      <result property="detailAddress" column="user_addr3" />
+   </resultMap> 
+     
+   <select id="userList" resultMap="memResult"   >
+      <![CDATA[
+        select * from usertbl order by user_created
+      ]]>
+   </select>
+
+   <insert id="insertUser"  parameterType="userVO">
+		<![CDATA[
+		 insert into usertbl (user_id, user_pw, user_email, user_name, user_phone, user_addr1, user_addr2, user_addr3)
+		 values(#{id}, #{pw}, #{name}, #{email}, #{phone}, #{zonecode}, #{address}, #{detailAddress})
+		]]>      
+	</insert>
+	
+	<select id="checkById"  resultType="int" parameterType="String">
+	<![CDATA[
+		SELECT COUNT(*) FROM usertbl 
+		WHERE user_id = #{id}
+	]]>
+  </select>
+</mapper>

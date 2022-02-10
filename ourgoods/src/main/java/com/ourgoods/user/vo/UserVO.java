@@ -4,22 +4,23 @@ import java.sql.Date;
 
 import org.springframework.stereotype.Component;
 
+import lombok.Data;
+
+@Data
 @Component("userVO")
 public class UserVO {
+	
 	private String id;
 	private String pw;
 	private String name;
-	private int grade;
 	private String email;
-	private String email2;
 	private String phone;
-	private Date date;
-	private Date updated;
-	private int tcode;
+	private String zonecode;
+	private String address;
+	private String detailAddress;
+	private Date joinDate;
 	
-	public UserVO() {
-		// TODO Auto-generated constructor stub
-	}
+	public UserVO() {}
 
 	public String getId() {
 		return id;
@@ -45,28 +46,12 @@ public class UserVO {
 		this.name = name;
 	}
 
-	public int getGrade() {
-		return grade;
-	}
-
-	public void setGrade(int grade) {
-		this.grade = grade;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getEmail2() {
-		return email2;
-	}
-
-	public void setEmail2(String email2) {
-		this.email2 = email2;
 	}
 
 	public String getPhone() {
@@ -77,30 +62,37 @@ public class UserVO {
 		this.phone = phone;
 	}
 
-	public Date getDate() {
-		return date;
+	public String getZonecode() {
+		return zonecode;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setZonecode(String zonecode) {
+		this.zonecode = zonecode;
 	}
 
-	public Date getUpdated() {
-		return updated;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setUpdated(Date updated) {
-		this.updated = updated;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public int getTcode() {
-		return tcode;
+	public String getDetailAddress() {
+		return detailAddress;
 	}
 
-	public void setTcode(int tcode) {
-		this.tcode = tcode;
+	public void setDetailAddress(String detailAddress) {
+		this.detailAddress = detailAddress;
 	}
-	
-	
-	
+
+	public Date getJoinDate() {
+		return joinDate;
+	}
+
+	public void setJoinDate(Date joinDate) {
+		this.joinDate = joinDate;
+	}
 }
+	
+	
