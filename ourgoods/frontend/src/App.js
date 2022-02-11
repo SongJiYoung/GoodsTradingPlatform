@@ -7,10 +7,10 @@ import Footer from './layout/Footer';
 import Home from './routes/Home';
 import MemberRoutes from './routes/member/MemberRoutes';
 import AuthApis from './api/AuthApis';
-import Navigation from './components/Navigation';
+// import Navigation from './components/Navigation';
 import PostListPage from './routes/PostListPage';
 import WritePostPage from './routes/WritePostPage';
-import Ex from './components/Ex';
+// import Ex from './components/Ex';
 
 function App() {
   const [userInfo, setUserInfo] = useState({
@@ -39,7 +39,7 @@ function App() {
     }));
     setUserInfo((prevState) => ({
       ...prevState,
-      id: response.data.id,
+      id: response.data.userid,
     }));
   };
 
