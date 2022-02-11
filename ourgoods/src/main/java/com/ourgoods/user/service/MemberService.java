@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mycompany.webproject.vo.MemberVO;
 import com.ourgoods.user.dao.MemberDAO;
 import com.ourgoods.user.vo.UserVO;
 
@@ -26,4 +25,11 @@ public class MemberService {
 	
 	@Autowired
 	private JavaMailSender javaMailSender;
+	
+	public void addMember(UserVO userVO) throws Exception {
+		String encodePassword = passwordEncoder.encode(userVO.getPw());
+		userVO.setPw(encodePassword);
+		memberDAO.insertUser(userVO);
+	} 
+	
 }

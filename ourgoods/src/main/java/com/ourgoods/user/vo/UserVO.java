@@ -10,6 +10,7 @@ import lombok.Data;
 @Component("userVO")
 public class UserVO {
 	
+	private String code;
 	private String id;
 	private String pw;
 	private String name;
@@ -21,7 +22,15 @@ public class UserVO {
 	private Date joinDate;
 	
 	public UserVO() {}
-
+	
+	public String getCode() {
+		return code;
+	}
+	
+	public void setCode(String code) {
+		this.code = code;
+	}
+	
 	public String getId() {
 		return id;
 	}

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ourgoods.user.dao.MemberDAO;
+import com.ourgoods.user.service.MemberService;
 import com.ourgoods.user.vo.UserVO;
 
 
@@ -35,6 +36,9 @@ public class MemberControllerImpl {
 	@Autowired
 	MemberDAO userDAO;
 	
+	@Autowired
+	MemberService memberService;
+	
 	@GetMapping
 	public List<UserVO> userList() {
 		System.out.println(userDAO.userList());
@@ -43,10 +47,10 @@ public class MemberControllerImpl {
 	}
 	
 	@PostMapping("/addMembers")
-	void insertUser(@RequestBody UserVO user) {
+	void insertUser(@RequestBody UserVO user) throws Exception {
 		logger.info("AddMemebers Called");
 		logger.info("AddMember : " + user);
-		userDAO.insertUser(user);
+		memberService.addMember(user);
 	}
 	
 	@PostMapping("/memberIdCheck")

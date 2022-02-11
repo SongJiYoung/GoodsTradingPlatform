@@ -5,6 +5,7 @@
 
 <mapper namespace="com.ourgoods.user.dao.MemberDAO">
    <resultMap id="memResult" type="userVO">
+   	  <result property="code" column="user_code" />
       <result property="id" column="user_id" />
       <result property="pw" column="user_pw" />
       <result property="name" column="user_name" />
@@ -22,7 +23,7 @@
       ]]>
    </select>
 
-   <insert id="insertUser"  parameterType="userVO">
+   <insert id="insertUser"  parameterType="userVO" useGeneratedKeys="true" keyProperty="code">
 		<![CDATA[
 		 insert into usertbl (user_id, user_pw, user_email, user_name, user_phone, user_addr1, user_addr2, user_addr3)
 		 values(#{id}, #{pw}, #{name}, #{email}, #{phone}, #{zonecode}, #{address}, #{detailAddress})
