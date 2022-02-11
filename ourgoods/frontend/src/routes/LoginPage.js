@@ -17,7 +17,6 @@ const LoginPage = ({ userInfoHandler }) => {
     try {
       const response = await AuthApis.postLogin({ userIdInput, password });
       console.log('postLoginResponse값', response);
-
       if (response.data.isLogon) {
         userInfoHandler(response);
         navigator('/');
@@ -33,6 +32,7 @@ const LoginPage = ({ userInfoHandler }) => {
     setUserLoginInput((prevState) => {
       return {
         ...prevState,
+        //computed property names
         [event.target.name]: event.target.value,
       };
     });

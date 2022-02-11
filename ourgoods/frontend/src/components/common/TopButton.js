@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import top_button from '../../img/top_button.png';
+import top_button from '../../images/top_button.png';
 
 function TopButton() {
   const [visible, setVisible] = useState(false);

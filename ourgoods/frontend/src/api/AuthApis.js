@@ -1,7 +1,18 @@
 import AxiosInstance from './AxiosInstance';
 
 const AuthApis = {
-  // 하단의 라우터들은 member/*라우터 안에있으므로 기본값으로 url앞에 froxy/member/가 붙어있으므로생략
+  postLogout(isLogon) {
+    return AxiosInstance({
+      url: 'member/logout',
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: { isLogon },
+    });
+  },
+
+  // 하단axiosInstance안에 있는 url들은 member/*라우터 안에있으므로 기본값으로 url앞에 froxy/member/가 붙어있으므로생략
   postLogin(userLoginInput) {
     const { userIdInput, password } = userLoginInput;
 
@@ -16,6 +27,7 @@ const AuthApis = {
       data: { id: userIdInput, pw: password },
     });
   },
+
   postRegister(userRegInfo) {
     const {
       id,
@@ -43,9 +55,9 @@ const AuthApis = {
         name,
         email,
         phone,
-        addr1: zonecode,
-        addr2: address,
-        addr3: detailAddress,
+        zonecode: zonecode,
+        address: address,
+        detailAddress: detailAddress,
       },
     });
   },

@@ -1,13 +1,13 @@
-import { Grid } from "../elements";
+import { Grid } from "../../elements";
 import styled from "styled-components";
-import banner1 from "../img/banner1.png";
+import banner3 from "../../images/banner3.png";
 
-function Banner1(){
+function Banner3(){
   return (
     <>
       <div style={{
-        padding: "3rem 0",
-        backgroundColor: "#FBF7F3",
+        padding: "3rem 0 0 0",
+        backgroundColor: "#E9ECE9",
       }}>
       <Grid width="1024px" margin="auto">
         <Image1></Image1>
@@ -17,11 +17,10 @@ function Banner1(){
   );
 }
 
-export default Banner1;
+export default Banner3;
 
 const Image1 = styled.div`
-  height: 600px;
-  background-image: url(${banner1});
+  height: 630px;
+  background-image: url(${banner3});
   background-size: 1024px 628px;
 `;
-
