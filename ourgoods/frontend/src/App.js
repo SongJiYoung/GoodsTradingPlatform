@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import PostPage from './routes/PostPage';
-
 import Header from './layout/Header';
 import Footer from './layout/Footer';
 import Home from './routes/Home';
 import MemberRoutes from './routes/member/MemberRoutes';
 import AuthApis from './api/AuthApis';
-// import Navigation from './components/Navigation';
-import PostListPage from './routes/PostListPage';
-import WritePostPage from './routes/WritePostPage';
-// import Ex from './components/Ex';
+import { Container } from 'react-bootstrap';
+import Headers from './components/Headers';
+
+import Post from './routes/Post';
+import UpdatePost from './routes/postPages/UpdatePost';
+import PostListPage from './routes/postPages/PostListPage';
+import WritePostPage from './routes/postPages/WritePostPage';
 
 function App() {
   const [userInfo, setUserInfo] = useState({
@@ -61,23 +62,22 @@ function App() {
   };
 
   return (
-    <>
+    <Container>
       <header>
-        {/* <Ex /> */}
+        <Headers />
         <Header userInfo={userInfo} onLogout={onLogout} isLogon={isLogon} />
-        {/* <Navigation /> */}
       </header>
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/post" element={<PostPage />} />
           <Route
             path="/member/*"
             element={<MemberRoutes userInfoHandler={userInfoHandler} />}
           />
-
           <Route path="/postlist" element={<PostListPage />} />
+          <Route path="/post/:id" element={<Post />} />
           <Route path="/writepost" element={<WritePostPage />} />
+          <Route path="updatepost/:id" element={<UpdatePost />} />
           {/* <Route path="/@:username">
             <Route index element={<PostListPage />} />
             <Route path=":postId" element={<PostPage />} />
@@ -87,7 +87,7 @@ function App() {
       <footer>
         <Footer />
       </footer>
-    </>
+    </Container>
   );
 }
 export default App;
