@@ -9,18 +9,15 @@ const WritePostPage = ({ FileInput, userInfo }) => {
   const [post, setPost] = useState({
     title: '',
     content: '',
+    userId: '',
     price: '',
     imageName: '',
     imageUrl: '',
+    zonecode: '',
     isSoldOut: false,
   });
   const [image, setImage] = useState('');
-  const { id, zonecode } = userInfo;
-
-  /*
-id
-zonecode:'',로그인하고받아와야함
-*/
+  const { userId, zonecode } = userInfo;
 
   const navigate = useNavigate();
 
@@ -29,6 +26,7 @@ zonecode:'',로그인하고받아와야함
     setPost((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
+      userId: userId,
     }));
   };
 
@@ -46,7 +44,7 @@ zonecode:'',로그인하고받아와야함
       imageName: file.name,
       imageUrl: file.url,
       zonecode: zonecode,
-      author: id,
+      userid: userId,
     }));
   };
 
@@ -92,10 +90,7 @@ zonecode:'',로그인하고받아와야함
       <Button type="button" onClick={onDeleteFile}>
         사진삭제
       </Button>
-      <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label></Form.Label>
-        <FileInput onFileChange={onFileChange} onLoadFile={onLoadFile} />
-      </Form.Group>
+      <FileInput onFileChange={onFileChange} onLoadFile={onLoadFile} />
       <Button type="submit" variant="primary">
         글쓰기
       </Button>

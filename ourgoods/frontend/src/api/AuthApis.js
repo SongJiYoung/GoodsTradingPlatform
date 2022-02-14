@@ -3,7 +3,7 @@ import AxiosInstance from './AxiosInstance';
 const AuthApis = {
   postLogout(isLogon) {
     return AxiosInstance({
-      url: 'member/logout',
+      url: '/member/logout',
       method: 'post',
       headers: {
         'Content-Type': 'application/json',

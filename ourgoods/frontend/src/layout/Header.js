@@ -10,7 +10,7 @@ import Post from '../images/post.svg';
 import MyPage from '../images/my_page.svg';
 
 function Header({ userInfo, onLogout, isLogon }) {
-  const { id } = userInfo;
+  const { userId } = userInfo;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -82,8 +82,8 @@ function Header({ userInfo, onLogout, isLogon }) {
             </Menu>
           </Link>
           <li>
-            {id ? (
-              <span className={styles.span}>{`${id}님`}</span>
+            {userId ? (
+              <span className={styles.span}>{`${userId}님`}</span>
             ) : (
               <Link className={styles.link} to={`/member/login`}>
                 <Button>Log In</Button>
@@ -91,7 +91,7 @@ function Header({ userInfo, onLogout, isLogon }) {
             )}
           </li>
           <li>
-            {id ? (
+            {userId ? (
               <Button
                 onClick={() => {
                   onLogout(isLogon);

@@ -1,5 +1,6 @@
 import AxiosInstance from './AxiosInstance';
 
+//(post)id를 pcode로 넘겨줘야함
 const PostsApis = {
   getPostList() {
     return AxiosInstance({
@@ -9,6 +10,7 @@ const PostsApis = {
   },
 
   getOnePost(id) {
+    // const pcode = id;
     return AxiosInstance({
       url: '/post/' + id,
       method: 'get',
@@ -16,7 +18,16 @@ const PostsApis = {
   },
 
   writePost(post) {
-    console.log(post);
+    const {
+      title,
+      content,
+      userId,
+      price,
+      imageUrl,
+      imageName,
+      zonecode,
+      isSoldOut,
+    } = post;
 
     return AxiosInstance({
       url: '/post',
@@ -24,11 +35,21 @@ const PostsApis = {
       headers: {
         'Content-type': 'application/json',
       },
-      data: post,
+      data: {
+        ptitle: title,
+        pcontent: content,
+        userid: userId,
+        price,
+        imageUrl,
+        imageName,
+        zonecode,
+        isSoldOut,
+      },
     });
   },
 
   deleteOnePost(id) {
+    // const pcode = id;
     return AxiosInstance({
       url: '/post/' + id,
       method: 'delete',

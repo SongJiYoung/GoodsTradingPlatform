@@ -12,7 +12,7 @@ const PostItem = ({ post }) => {
           <img
             className={styles.img}
             src={imageUrl}
-            alt="video thumbnail"
+            alt="상품 이미지가 없는 포스트입니다"
           ></img>
         </Link>
       </Card.Body>

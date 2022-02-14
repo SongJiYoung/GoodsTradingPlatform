@@ -7,6 +7,7 @@ import MemberRoutes from './routes/member/MemberRoutes';
 import AuthApis from './api/AuthApis';
 import { Container } from 'react-bootstrap';
 
+import PostRoutes from './routes/PostRoutes';
 import Post from './routes/postPages/Post';
 import UpdatePost from './routes/postPages/UpdatePost';
 import PostListPage from './routes/postPages/PostListPage';
@@ -14,25 +15,25 @@ import WritePostPage from './routes/postPages/WritePostPage';
 
 function App({ FileInput }) {
   const [userInfo, setUserInfo] = useState({
-    id: '', //server에서 온 유저 정보 저장
+    userId: '', //server에서 온 유저 정보 저장
     zonecode: '',
   });
   const [userAuth, setUserAuth] = useState({ isLogon: false });
-  const { id } = userInfo;
+  const { userId } = userInfo;
   const { isLogon } = userAuth;
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const userInfoSave = JSON.parse(sessionStorage.getItem('userInfo'));
-    if (id === '') {
+    if (userId === '') {
       setUserInfo((prevState) => ({ ...prevState, ...userInfoSave }));
     }
   }, []);
 
   useEffect(() => {
     window.sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
-  }, [id]);
+  }, [userId]);
 
   console.log('App state값', userInfo);
   const userInfoHandler = (response) => {
@@ -42,20 +43,21 @@ function App({ FileInput }) {
     }));
     setUserInfo((prevState) => ({
       ...prevState,
-      id: response.data.userid,
+      userId: response.data.userid,
     }));
   };
 
   const onLogout = async (isLogon) => {
     try {
       const response = await AuthApis.postLogout(isLogon);
+      navigate('/');
       setUserAuth((prevState) => ({
         ...prevState,
         isLogon: false,
       }));
       setUserInfo((prevState) => ({
         ...prevState,
-        id: '',
+        userId: '',
       }));
       window.sessionStorage.clear();
     } catch (error) {
@@ -75,11 +77,17 @@ function App({ FileInput }) {
             path="/member/*"
             element={<MemberRoutes userInfoHandler={userInfoHandler} />}
           />
+
+          {/*추후 리펙토링 <Route
+            path="/board/*"
+            element={<PostRoutes userAuth={userAuth} userInfo={userInfo} />}
+          /> */}
           <Route
-            path="/postlist"
+            path={'/postlist'}
             element={<PostListPage userAuth={userAuth} />}
           />
-          <Route path="/post/:id" element={<Post />} />
+
+          <Route path="/post/:id" element={<Post userInfo={userInfo} />} />
           <Route
             path="/writepost"
             element={
@@ -88,7 +96,7 @@ function App({ FileInput }) {
           />
           <Route
             path="updatepost/:id"
-            element={<UpdatePost FileInput={FileInput} />}
+            element={<UpdatePost FileInput={FileInput} userInfo={userInfo} />}
           />
           {/* <Route path="/@:username">
             <Route index element={<PostListPage />} />

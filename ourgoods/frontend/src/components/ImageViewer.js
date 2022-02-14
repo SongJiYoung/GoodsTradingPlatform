@@ -11,7 +11,7 @@ const StyledImgDiv = styled.div`
 const ImageViewer = ({ image }) => {
   return (
     <StyledImgDiv>
-      <strong>업로드된 이미지</strong>
+      <strong>이미지 미리보기</strong>
       {image && <img src={image} alt="업로드 이미지" />}
       <div className="img__box"></div>
     </StyledImgDiv>

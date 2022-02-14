@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, ButtonGroup } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import PostsApis from '../../api/PostsApis';
 import styled from 'styled-components';
-
 //작성자,우편번호
 //조회수넣어야함
 
@@ -18,11 +17,9 @@ const Img = styled.img`
   width: 800px;
 `;
 
-const Post = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-
+const Post = ({ userInfo }) => {
   const [post, setPost] = useState({
+    userid: '',
     title: '',
     content: '',
     price: '',
@@ -31,16 +28,42 @@ const Post = () => {
     isSoldOut: false,
     zonecode: '',
   });
-
   useEffect(() => {
     readPost(id);
   }, []);
+  const navigate = useNavigate();
+
+  const { id } = useParams();
+  const { userId } = userInfo;
+  const { userid } = post;
 
   const readPost = async () => {
     try {
       const response = await PostsApis.getOnePost(id);
       if (response.status === 200) {
-        setPost(response.data);
+        const {
+          ptitle,
+          pcontent,
+          userid,
+          pnumber,
+          imageUrl,
+          price,
+          imageName,
+          isSoldOut,
+          tcode,
+        } = response.data;
+        setPost((prevState) => ({
+          ...prevState,
+          title: ptitle,
+          userid: userid,
+          content: pcontent,
+          readCount: pnumber,
+          imageUrl,
+          price,
+          imageName,
+          isSoldOut,
+          zonecode: tcode,
+        }));
       } else {
         alert(response.status);
       }
@@ -63,7 +86,11 @@ const Post = () => {
   };
 
   const updatePost = (id) => {
-    navigate('/updatepost/' + id);
+    if (userId === userid) {
+      navigate('/updatepost/' + id);
+    } else {
+      alert('작성자가 아닙니다');
+    }
   };
 
   return (
@@ -71,8 +98,9 @@ const Post = () => {
       <h2>{post.title}</h2>
       <hr />
       <SellerInfo>
-        <Li>작성자:{post.author}</Li>
-        <Li>위치:{post.zonecode}</Li>
+        <Li>가격 : {post.price || ''}</Li>
+        <Li>작성자:{post.userid || ''}</Li>
+        <Li>위치:{post.zonecode || ''}</Li>
         <Li>
           <Button>채팅하기</Button>
         </Li>
@@ -81,19 +109,11 @@ const Post = () => {
         </Li>
       </SellerInfo>
       <hr />
-      <Img src={post.imageUrl}></Img>
-      <h5>{post.content}</h5>
-      <Button variant="secondary" onClick={() => updatePost(post.id)}>
-        수정
-      </Button>{' '}
-      <Button
-        variant="secondary"
-        onClick={() => {
-          deletePost();
-        }}
-      >
-        삭제
-      </Button>{' '}
+      <Img src={post.imageUrl || ''} />
+      <h5>{post.content || ''}</h5>
+      <Button onClick={() => updatePost(id)}> 수정</Button>
+      <span> </span>
+      <Button onClick={deletePost}>삭제</Button>
     </div>
   );
 };

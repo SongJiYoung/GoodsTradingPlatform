@@ -1,17 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import PostsApis from '../../api/PostsApis';
+import ImageViewer from '../../components/ImageViewer';
+import Button from '../../components/common/Button';
 
 //아이디가 작성자와 동일할 경우에만 수정가능하도록 해야함
-const UpdatePost = () => {
+const UpdatePost = ({ FileInput, userInfo }) => {
   const [post, setPost] = useState({
     title: '',
-    author: '',
+    content: '',
+    userId: '',
+    price: '',
+    imageName: '',
+    imageUrl: '',
+    zonecode: '',
+    isSoldOut: false,
   });
 
-  const navigate = useNavigate();
   const { id } = useParams();
+  const { userId, zonecode } = userInfo;
+  const { imageUrl, title, content, price, imageName, isSoldOut } = post;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     readPost();
@@ -21,7 +32,30 @@ const UpdatePost = () => {
     try {
       const response = await PostsApis.getOnePost(id);
       if (response.status === 200) {
-        setPost(response.data);
+        const {
+          ptitle,
+          pcontent,
+          userid,
+          pnumber,
+          imageUrl,
+          price,
+          imageName,
+          isSoldOut,
+          tcode,
+        } = response.data;
+
+        setPost((prevState) => ({
+          ...prevState,
+          title: ptitle,
+          userId: userid,
+          content: pcontent,
+          readCount: pnumber,
+          imageUrl,
+          price,
+          imageName,
+          isSoldOut,
+          zonecode: tcode,
+        }));
       } else {
         alert(response.status);
       }
@@ -38,12 +72,45 @@ const UpdatePost = () => {
     }));
   };
 
+  const onDeleteFile = () => {
+    URL.revokeObjectURL(imageUrl);
+    setPost((prevState) => ({ ...prevState, imageUrl: '' }));
+  };
+
+  const onLoadFile = (event) => {
+    setPost((prevState) => ({
+      ...prevState,
+      imageUrl: URL.createObjectURL(event.target.files[0]),
+    }));
+  };
+
+  const onFileChange = (file) => {
+    setPost((prevState) => ({
+      ...prevState,
+      imageName: file.name,
+      imageUrl: file.url,
+      zonecode: zonecode,
+      userid: userId,
+    }));
+  };
+
   const submitPost = (event) => {
+    console.log('submitpost', post);
+    const PostData = {
+      ptitle: title,
+      pcontent: content,
+      userid: userId,
+      price,
+      imageUrl,
+      imageName,
+      zonecode,
+      isSoldOut,
+    };
     event.preventDefault();
     fetch('/post/' + id, {
       method: 'PUT',
       headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify(post),
+      body: JSON.stringify(PostData),
     })
       .then((res) => {
         if (res.statue === 200) return res.json();
@@ -54,7 +121,8 @@ const UpdatePost = () => {
         }
       });
   };
-  // const submitPost = async () => {
+  // 추후 axios로 리펙토리 예정
+  //  const submitPost = async () => {
   //   try {
   //     const postData = { post, id };
   //     const response = await PostsApis.postUpdate(postData);
@@ -78,26 +146,33 @@ const UpdatePost = () => {
           placeholder="굿즈명"
           onChange={changeValue}
           name="title"
-          value={post.title}
+          value={post.title || ''}
         />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+        <Form.Label>가격</Form.Label>
+        <Form.Control
+          type="number"
+          placeholder="숫자만 입력해주세요"
+          onChange={changeValue}
+          name="price"
+          value={post.price || ''}
+        />
         <Form.Label>상품설명</Form.Label>
         <Form.Control
           as="textarea"
           rows={5}
           onChange={changeValue}
-          name="author"
-          value={post.author}
+          name="content"
+          value={post.content || ''}
         />
       </Form.Group>
-      <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label>상품사진을 등록해주세요</Form.Label>
-        <Form.Control type="file" />
-      </Form.Group>
+      <ImageViewer image={imageUrl} />
+      <Button type="button" onClick={onDeleteFile}>
+        사진삭제
+      </Button>
+      <FileInput onFileChange={onFileChange} onLoadFile={onLoadFile} />
       <Button type="submit" variant="primary">
         수정하기
-      </Button>{' '}
+      </Button>
     </Form>
   );
 };
