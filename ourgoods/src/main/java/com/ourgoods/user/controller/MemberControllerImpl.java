@@ -23,7 +23,7 @@ import com.ourgoods.user.service.MemberService;
 import com.ourgoods.user.vo.UserVO;
 
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
 @RequestMapping("/member")
 public class MemberControllerImpl {
@@ -39,12 +39,12 @@ public class MemberControllerImpl {
 	@Autowired
 	MemberService memberService;
 	
-	@GetMapping
-	public List<UserVO> userList() {
-		System.out.println(userDAO.userList());
-		System.out.println("USER LIST");
-		return userDAO.userList();
-	}
+//	@GetMapping
+//	public List<UserVO> userList() {
+//		System.out.println(userDAO.userList());
+//		System.out.println("USER LIST");
+//		return userDAO.userList();
+//	}
 	
 	@PostMapping("/addMembers")
 	void insertUser(@RequestBody UserVO user) throws Exception {
@@ -52,6 +52,8 @@ public class MemberControllerImpl {
 		logger.info("AddMember : " + user);
 		memberService.addMember(user);
 	}
+	
+	
 	
 	@PostMapping("/memberIdCheck")
 	public String memberIdCheck(String id) throws Exception{
@@ -81,13 +83,13 @@ public class MemberControllerImpl {
 		
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-		
+			
 		/* 인증번호(난수) 생성 */
 		Random random = new Random();
 		int checkNum = random.nextInt(8888) + 1111;
-
+		
 		logger.info("인증번호 " + checkNum);
-
+		
 		String htmlString = "Our Goods를 방문해주셔서 진심으로 환영합니다" + "<br><br>" + " 인증번호: " + checkNum + " 입니다." + "<br><br>"
 				+ "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
 		try {
