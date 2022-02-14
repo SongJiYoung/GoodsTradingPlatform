@@ -1,17 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
-import AuthApis from '../api/AuthApis';
-import PostsApis from '../api/PostsApis';
+import PostsApis from '../../api/PostsApis';
+import styled from 'styled-components';
+
+//작성자,우편번호
+//조회수넣어야함
+
+const SellerInfo = styled.ul`
+  display: flex;
+  justify-content: flex-between;
+`;
+const Li = styled.li`
+  margin: 1rem;
+`;
+const Img = styled.img`
+  width: 800px;
+`;
 
 const Post = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [post, setPost] = useState({
-    id: '',
     title: '',
-    author: '',
+    content: '',
+    price: '',
+    imageName: '',
+    imageUrl: '',
+    isSoldOut: false,
+    zonecode: '',
   });
 
   useEffect(() => {
@@ -44,48 +62,36 @@ const Post = () => {
     }
   };
 
-  /*
-  fetch('', {
-    method: 'DELETE',
-    headers: {
-      'Content-type': 'application/json;charset=utf-8',
-    },
-    body: JSON.stringify(id),
-  })
-    .then((res) => res.text())
-    .then((res) => {
-      if (res === 'ok') {
-        navigate('/postlist');
-      } else {
-        alert('삭제실패');
-      }
-    });
-*/
-
-  const updatePost = async () => {
-    try {
-      const postData = { post, id };
-      const response = await PostsApis.postUpdate(postData);
-      if (response.data === 200) {
-        navigate('/updatepost/' + id);
-      } else {
-        return null;
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const updatePost = (id) => {
+    navigate('/updatepost/' + id);
   };
 
   return (
     <div>
-      <h1>굿즈 상세보기</h1>
+      <h2>{post.title}</h2>
       <hr />
-      <h3>{post.author}</h3>
-      <h1>{post.title}</h1>
-      <Button variant="secondary" onClick={updatePost}>
+      <SellerInfo>
+        <Li>작성자:{post.author}</Li>
+        <Li>위치:{post.zonecode}</Li>
+        <Li>
+          <Button>채팅하기</Button>
+        </Li>
+        <Li>
+          <Button>거래상태</Button>
+        </Li>
+      </SellerInfo>
+      <hr />
+      <Img src={post.imageUrl}></Img>
+      <h5>{post.content}</h5>
+      <Button variant="secondary" onClick={() => updatePost(post.id)}>
         수정
       </Button>{' '}
-      <Button variant="secondary" onClick={deletePost}>
+      <Button
+        variant="secondary"
+        onClick={() => {
+          deletePost();
+        }}
+      >
         삭제
       </Button>{' '}
     </div>

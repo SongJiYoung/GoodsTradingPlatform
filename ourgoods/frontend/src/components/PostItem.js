@@ -1,15 +1,19 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import styles from './PostItem.module.css';
 
 const PostItem = ({ post }) => {
-  const { id, title, author } = post;
+  const { id, imageUrl } = post;
   return (
-    <Card>
-      <Card.Body>
-        <Card.Title>{title}</Card.Title>
-        <Link to={'/post/' + id} className="btn btn-primary">
-          상세보기
+    <Card className={styles.section}>
+      <Card.Body className={styles.container}>
+        <Link to={'/post/' + id} style={{ backGround: 'white' }}>
+          <img
+            className={styles.img}
+            src={imageUrl}
+            alt="video thumbnail"
+          ></img>
         </Link>
       </Card.Body>
     </Card>

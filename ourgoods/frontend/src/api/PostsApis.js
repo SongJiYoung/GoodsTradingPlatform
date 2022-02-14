@@ -3,22 +3,32 @@ import AxiosInstance from './AxiosInstance';
 const PostsApis = {
   getPostList() {
     return AxiosInstance({
-      url: 'post',
+      url: '/post',
       method: 'get',
     });
   },
 
-  //url앞에 post가 자동으로 들어감
   getOnePost(id) {
     return AxiosInstance({
-      url: id,
+      url: '/post/' + id,
       method: 'get',
+    });
+  },
+
+  writePost(post) {
+    console.log(post);
+
+    return AxiosInstance({
+      url: '/post',
+      method: 'post',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      data: post,
     });
   },
 
   deleteOnePost(id) {
-    console.log('iddddddddddddd', id);
-
     return AxiosInstance({
       url: '/post/' + id,
       method: 'delete',
@@ -29,19 +39,17 @@ const PostsApis = {
     });
   },
 
-  postUpdate(postData) {
-    const { post, id } = postData;
-    console.log(post);
-    console.log(id);
-    return AxiosInstance({
-      url: '/post/' + id,
-      method: 'put',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      data: post,
-    });
-  },
+  // postUpdate(postData) {
+  //   const { post, id } = postData;
+  //   return AxiosInstance({
+  //     url: '/post/' + id,
+  //     method: 'put',
+  //     headers: {
+  //       'Content-type': 'application/json',
+  //     },
+  //     data: post,
+  //   });
+  // },
 };
 
 export default PostsApis;

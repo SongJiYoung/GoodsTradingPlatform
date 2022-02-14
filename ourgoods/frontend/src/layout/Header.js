@@ -1,10 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Grid } from '../elements';
-
 import styled, { createGlobalStyle } from 'styled-components';
 import styles from './css/Header.module.css';
-
 import Logo from '../images/ourGoods.svg';
 import SearchGlass from '../images/search.svg';
 import Home from '../images/home.svg';

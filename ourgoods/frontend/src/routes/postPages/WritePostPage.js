@@ -1,12 +1,26 @@
 import React, { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import PostsApis from '../../api/PostsApis';
+import ImageViewer from '../../components/ImageViewer';
+import Button from '../../components/common/Button';
+import { Form } from 'react-bootstrap';
 
-const WritePostPage = () => {
+const WritePostPage = ({ FileInput, userInfo }) => {
   const [post, setPost] = useState({
     title: '',
-    author: '',
+    content: '',
+    price: '',
+    imageName: '',
+    imageUrl: '',
+    isSoldOut: false,
   });
+  const [image, setImage] = useState('');
+  const { id, zonecode } = userInfo;
+
+  /*
+id
+zonecode:'',로그인하고받아와야함
+*/
 
   const navigate = useNavigate();
 
@@ -18,23 +32,35 @@ const WritePostPage = () => {
     }));
   };
 
-  const submitPost = (event) => {
-    event.preventDefault();
-    fetch('/post', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json;charset=utf-8',
-      },
-      body: JSON.stringify(post),
-    })
-      .then((res) => {
-        if (res.statue === 201) return res.json();
-      })
-      .then((res) => {
-        if (res !== null) {
-          navigate('/postlist');
-        }
-      });
+  const onLoadFile = (event) => {
+    setImage(URL.createObjectURL(event.target.files[0]));
+  };
+  const onDeleteFile = () => {
+    URL.revokeObjectURL(image);
+    setImage('');
+  };
+
+  const onFileChange = (file) => {
+    setPost((prevState) => ({
+      ...prevState,
+      imageName: file.name,
+      imageUrl: file.url,
+      zonecode: zonecode,
+      author: id,
+    }));
+  };
+
+  const submitPost = async (event) => {
+    try {
+      event.preventDefault();
+      const response = await PostsApis.writePost(post);
+      console.log(response);
+      if (response.status === 201) {
+        navigate('/postlist');
+      }
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -47,23 +73,32 @@ const WritePostPage = () => {
           onChange={changeValue}
           name="title"
         />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+        <Form.Label>가격</Form.Label>
+        <Form.Control
+          type="number"
+          placeholder="숫자만 입력해주세요"
+          onChange={changeValue}
+          name="price"
+        />
         <Form.Label>상품설명</Form.Label>
         <Form.Control
           as="textarea"
           rows={5}
           onChange={changeValue}
-          name="author"
+          name="content"
         />
       </Form.Group>
+      <ImageViewer image={image} />
+      <Button type="button" onClick={onDeleteFile}>
+        사진삭제
+      </Button>
       <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label>상품사진을 등록해주세요</Form.Label>
-        <Form.Control type="file" />
+        <Form.Label></Form.Label>
+        <FileInput onFileChange={onFileChange} onLoadFile={onLoadFile} />
       </Form.Group>
       <Button type="submit" variant="primary">
         글쓰기
-      </Button>{' '}
+      </Button>
     </Form>
   );
 };

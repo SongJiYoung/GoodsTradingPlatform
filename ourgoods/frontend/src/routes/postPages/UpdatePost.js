@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
+import PostsApis from '../../api/PostsApis';
 
+//아이디가 작성자와 동일할 경우에만 수정가능하도록 해야함
 const UpdatePost = () => {
   const [post, setPost] = useState({
     title: '',
@@ -11,16 +13,22 @@ const UpdatePost = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  console.log(id);
   useEffect(() => {
-    ///post/:id
-    //updatepost/post/:id 로날라감
-    fetch('/post/' + id)
-      .then((res) => res.json())
-      .then((res) => {
-        setPost(res);
-      });
+    readPost();
   }, []);
+
+  const readPost = async () => {
+    try {
+      const response = await PostsApis.getOnePost(id);
+      if (response.status === 200) {
+        setPost(response.data);
+      } else {
+        alert(response.status);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const changeValue = (event) => {
     event.preventDefault();
@@ -32,9 +40,13 @@ const UpdatePost = () => {
 
   const submitPost = (event) => {
     event.preventDefault();
-    fetch('', { method: 'PUT' })
+    fetch('/post/' + id, {
+      method: 'PUT',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify(post),
+    })
       .then((res) => {
-        if (res.statue === 201) return res.json();
+        if (res.statue === 200) return res.json();
       })
       .then((res) => {
         if (res !== null) {
@@ -42,6 +54,20 @@ const UpdatePost = () => {
         }
       });
   };
+  // const submitPost = async () => {
+  //   try {
+  //     const postData = { post, id };
+  //     const response = await PostsApis.postUpdate(postData);
+  //     console.log(response);
+  //     if (response.data === 201) {
+  //       navigate('/postlist');
+  //     } else {
+  //       return null;
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <Form onSubmit={submitPost}>
@@ -70,7 +96,7 @@ const UpdatePost = () => {
         <Form.Control type="file" />
       </Form.Group>
       <Button type="submit" variant="primary">
-        글쓰기
+        수정하기
       </Button>{' '}
     </Form>
   );
