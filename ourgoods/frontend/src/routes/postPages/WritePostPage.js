@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PostsApis from '../../api/PostsApis';
 import ImageViewer from '../../components/ImageViewer';
-import Button from '../../components/common/Button';
 import { Form } from 'react-bootstrap';
+import DeleteAndSaveButtons from '../../components/DeleteAndSaveButtons';
 
 const WritePostPage = ({ FileInput, userInfo }) => {
   const [post, setPost] = useState({
@@ -87,13 +87,8 @@ const WritePostPage = ({ FileInput, userInfo }) => {
         />
       </Form.Group>
       <ImageViewer image={image} />
-      <Button type="button" onClick={onDeleteFile}>
-        사진삭제
-      </Button>
       <FileInput onFileChange={onFileChange} onLoadFile={onLoadFile} />
-      <Button type="submit" variant="primary">
-        글쓰기
-      </Button>
+      <DeleteAndSaveButtons onDeleteFile={onDeleteFile} />
     </Form>
   );
 };

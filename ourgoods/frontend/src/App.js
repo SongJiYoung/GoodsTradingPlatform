@@ -21,8 +21,9 @@ function App({ FileInput }) {
   const [userAuth, setUserAuth] = useState({ isLogon: false });
   const { userId } = userInfo;
   const { isLogon } = userAuth;
-
   const navigate = useNavigate();
+
+  console.log('App state값', isLogon);
 
   useEffect(() => {
     const userInfoSave = JSON.parse(sessionStorage.getItem('userInfo'));
@@ -35,7 +36,6 @@ function App({ FileInput }) {
     window.sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
   }, [userId]);
 
-  console.log('App state값', userInfo);
   const userInfoHandler = (response) => {
     setUserAuth((prevState) => ({
       ...prevState,

@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import PostsApis from '../../api/PostsApis';
 import ImageViewer from '../../components/ImageViewer';
-import Button from '../../components/common/Button';
+import DeleteAndSaveButtons from '../../components/DeleteAndSaveButtons';
 
 //아이디가 작성자와 동일할 경우에만 수정가능하도록 해야함
 const UpdatePost = ({ FileInput, userInfo }) => {
@@ -166,13 +166,8 @@ const UpdatePost = ({ FileInput, userInfo }) => {
         />
       </Form.Group>
       <ImageViewer image={imageUrl} />
-      <Button type="button" onClick={onDeleteFile}>
-        사진삭제
-      </Button>
       <FileInput onFileChange={onFileChange} onLoadFile={onLoadFile} />
-      <Button type="submit" variant="primary">
-        수정하기
-      </Button>
+      <DeleteAndSaveButtons onDeleteFile={onDeleteFile} />
     </Form>
   );
 };

@@ -10,9 +10,9 @@ const PostsApis = {
   },
 
   getOnePost(id) {
-    // const pcode = id;
+    const pcode = id;
     return AxiosInstance({
-      url: '/post/' + id,
+      url: '/post/' + pcode,
       method: 'get',
     });
   },
@@ -45,18 +45,21 @@ const PostsApis = {
         zonecode,
         isSoldOut,
       },
+      data: {
+        yo: 'hello',
+      },
     });
   },
 
   deleteOnePost(id) {
-    // const pcode = id;
+    const pcode = { id };
     return AxiosInstance({
       url: '/post/' + id,
       method: 'delete',
       headers: {
         'Content-type': 'application/json',
       },
-      data: { id },
+      data: pcode,
     });
   },
 
