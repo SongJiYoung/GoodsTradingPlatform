@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-const AxiosInstance = axios.create({
-  // baseURL="http://localhost:8090"
-}); //axios instance
+const AxiosInstance = axios.create({}); //axios instance
 
 axios.defaults.withCredentials = true;
 
@@ -12,6 +10,7 @@ AxiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.log(error);
     return Promise.reject(error);
   },
 );

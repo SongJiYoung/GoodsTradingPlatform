@@ -1,44 +1,113 @@
-import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
-
-import PostPage from './routes/PostPage';
-import PostListPage from './routes/PostListPage';
-import WritePostPage from './routes/WritePostPage';
-
+import { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
 import Home from './routes/Home';
-import AccountRoutes from './routes/accounts/AccountRoutes';
+import MemberRoutes from './routes/member/MemberRoutes';
+import AuthApis from './api/AuthApis';
+import { Container } from 'react-bootstrap';
 
-function App() {
-  const [user, setUser] = useState(null); //사용자정보관리
-  // const authenticated = user != null; //인증여부저장
-  // authenticated = user != null;
+import PostRoutes from './routes/PostRoutes';
+import Post from './routes/postPages/Post';
+import UpdatePost from './routes/postPages/UpdatePost';
+import PostListPage from './routes/postPages/PostListPage';
+import WritePostPage from './routes/postPages/WritePostPage';
 
-  //const login = ({ email, password }) => setUser(signIn({ email, password }));
-  //const logout = () => setUser(null);
+function App({ FileInput }) {
+  const [userInfo, setUserInfo] = useState({
+    userId: '', //server에서 온 유저 정보 저장
+    zonecode: '',
+  });
+  const [userAuth, setUserAuth] = useState({ isLogon: false });
+  const { userId } = userInfo;
+  const { isLogon } = userAuth;
+  const navigate = useNavigate();
+
+  console.log('App state값', isLogon);
+
+  useEffect(() => {
+    const userInfoSave = JSON.parse(sessionStorage.getItem('userInfo'));
+    if (userId === '') {
+      setUserInfo((prevState) => ({ ...prevState, ...userInfoSave }));
+    }
+  }, []);
+
+  useEffect(() => {
+    window.sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+  }, [userId]);
+
+  const userInfoHandler = (response) => {
+    setUserAuth((prevState) => ({
+      ...prevState,
+      isLogon: response.data.isLogon,
+    }));
+    setUserInfo((prevState) => ({
+      ...prevState,
+      userId: response.data.userid,
+    }));
+  };
+
+  const onLogout = async (isLogon) => {
+    try {
+      const response = await AuthApis.postLogout(isLogon);
+      navigate('/');
+      setUserAuth((prevState) => ({
+        ...prevState,
+        isLogon: false,
+      }));
+      setUserInfo((prevState) => ({
+        ...prevState,
+        userId: '',
+      }));
+      window.sessionStorage.clear();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    <>
+    <Container>
       <header>
-        <Header />
+        <Header userInfo={userInfo} onLogout={onLogout} isLogon={isLogon} />
       </header>
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/post" element={<PostPage />} />
-          <Route path="/accounts/*" element={<AccountRoutes />} />
-          <Route path="/write" element={<WritePostPage />} />
-          <Route path="/@:username">
+          <Route
+            path="/member/*"
+            element={<MemberRoutes userInfoHandler={userInfoHandler} />}
+          />
+
+          {/*추후 리펙토링 <Route
+            path="/board/*"
+            element={<PostRoutes userAuth={userAuth} userInfo={userInfo} />}
+          /> */}
+          <Route
+            path={'/postlist'}
+            element={<PostListPage userAuth={userAuth} />}
+          />
+
+          <Route path="/post/:id" element={<Post userInfo={userInfo} />} />
+          <Route
+            path="/writepost"
+            element={
+              <WritePostPage FileInput={FileInput} userInfo={userInfo} />
+            }
+          />
+          <Route
+            path="updatepost/:id"
+            element={<UpdatePost FileInput={FileInput} userInfo={userInfo} />}
+          />
+          {/* <Route path="/@:username">
             <Route index element={<PostListPage />} />
             <Route path=":postId" element={<PostPage />} />
-          </Route>
+          </Route> */}
         </Routes>
       </main>
       <footer>
         <Footer />
       </footer>
-    </>
+    </Container>
   );
 }
 export default App;

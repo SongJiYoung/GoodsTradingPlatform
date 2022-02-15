@@ -1,16 +1,21 @@
-import React from "react";
-import { Grid } from "../elements";
-import styled, { createGlobalStyle } from "styled-components";
-import Logo from '../img/ourGoods.svg';
-import SearchGlass from '../img/search.svg';
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Grid } from '../elements';
+import styled, { createGlobalStyle } from 'styled-components';
+import styles from './css/Header.module.css';
+import Logo from '../images/ourGoods.svg';
+import SearchGlass from '../images/search.svg';
+import Home from '../images/home.svg';
+import Post from '../images/post.svg';
+import MyPage from '../images/my_page.svg';
 
-function Header() {
-  
+function Header({ userInfo, onLogout, isLogon }) {
+  const { userId } = userInfo;
+
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(event.target.value);
-  }
+  };
 
   return (
     <>
@@ -25,44 +30,81 @@ function Header() {
       >
         <Grid is_flex padding="5px 0px" width="1024px" margin="auto">
           <Grid is_start maxwidth="700px">
-          <Link to={`/`}>
-            <img
-              width="150px"
-              height="40px"
-              src={Logo}
-              alt="굿즈 로고" />
-          </Link>
+            <Link to={`/`}>
+              <img width="150px" height="40px" src={Logo} alt="굿즈 로고" />
+            </Link>
             <InputWrap>
               <Grid is_flex>
                 <form>
-                  <Input placeholder="카테고리, 물품명 등을 검색하세요" onChange={handleSubmit}></Input>
+                  <Input
+                    placeholder="카테고리, 물품명 등을 검색하세요"
+                    onChange={handleSubmit}
+                  ></Input>
                   <SearchButton>
-                  <img
-                      style={{ marginRight: "10px" }}
-                      width="20px"
-                      height="20px"
+                    <img
+                      style={{ marginRight: '10px' }}
                       src={SearchGlass}
-                      alt="검색 돋보기" />
-                    </SearchButton>
+                      alt="검색 돋보기"
+                    />
+                  </SearchButton>
                 </form>
               </Grid>
             </InputWrap>
           </Grid>
-          <Link to={`/`} style={{ textDecoration: 'none' }}>
-            <Menu>Home</Menu>
+          <Link to={`/`} className={styles.link}>
+            <Menu>
+              <img
+                style={{ display: 'block', margin: 'auto' }}
+                src={Home}
+                alt="메인페이지"
+              />
+              <P>홈</P>
+            </Menu>
           </Link>
-          <Link to={`/post`} style={{ textDecoration: 'none' }}>
-            <Menu>Post</Menu>
+          <Link to={`/postlist`} className={styles.link}>
+            <Menu>
+              <img
+                style={{ display: 'block', margin: 'auto' }}
+                src={Post}
+                alt="게시물페이지"
+              />
+              <P>게시글</P>
+            </Menu>
           </Link>
-          <Link to={`/accounts/my_page`} style={{ textDecoration: 'none' }}>
-            <Menu>MyPage</Menu>
+          <Link to={`/member/my_page`} className={styles.link}>
+            <Menu>
+              <img
+                style={{ display: 'block', margin: 'auto' }}
+                src={MyPage}
+                alt="마이페이지"
+              />
+              <P>마이페이지</P>
+            </Menu>
           </Link>
-          <Link to={`/accounts/login`}>
-            <Button>Log In</Button>
-          </Link>
-          <Link to={`/accounts/sign_up`}>
-            <Button>Sign Up</Button>
-          </Link>
+          <li>
+            {userId ? (
+              <span className={styles.span}>{`${userId}님`}</span>
+            ) : (
+              <Link className={styles.link} to={`/member/login`}>
+                <Button>Log In</Button>
+              </Link>
+            )}
+          </li>
+          <li>
+            {userId ? (
+              <Button
+                onClick={() => {
+                  onLogout(isLogon);
+                }}
+              >
+                Log Out
+              </Button>
+            ) : (
+              <Link to={`/member/sign_up`}>
+                <Button>Sign Up</Button>
+              </Link>
+            )}
+          </li>
         </Grid>
       </div>
     </>
@@ -75,7 +117,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
   }
-`
+`;
 const SearchButton = styled.button`
   background-color: transparent;
   border: hidden;
@@ -83,7 +125,7 @@ const SearchButton = styled.button`
 
 const InputWrap = styled.div`
   border-radius: 5px;
-  border: solid 1px #E9ECEF;
+  border: solid 1px #e9ecef;
   text-decoration: none;
   height: 40px;
   box-sizing: border-box;
@@ -99,27 +141,31 @@ const Input = styled.input`
   margin: auto;
   -webkit-appearance: none;
   background-color: transparent;
-  
-  &::placeholder{
+
+  &::placeholder {
     color: #999999;
   }
 `;
 
 const Menu = styled.div`
-  margin: auto;
-  padding: 10px;
-  color: #333333;
-  font-size: 16px;
-
-  &:hover{
-    text-decoration: underline;
+  &:hover {
+    background-color: #d3d3d3;
+    border-radius: 5px;
   }
+`;
+
+const P = styled.p`
+  color: #333333;
+  font-size: 10px;
+  text-align: center;
+  width: 50px;
+  margin: auto;
 `;
 
 const Button = styled.button`
   width: 90px;
   border-radius: 5px;
-  border: solid 1px #E9ECEF;
+  border: solid 1px #e9ecef;
   box-sizing: border-box;
   text-decoration: none;
   display: inline-block;
@@ -132,8 +178,8 @@ const Button = styled.button`
   background-color: #ffffff;
   color: #333333;
 
-  &:hover{
-    background-color: #EC9A71;
+  &:hover {
+    background-color: #ec9a71;
     color: #ffffff;
   }
 `;

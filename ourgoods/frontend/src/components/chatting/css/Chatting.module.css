@@ -1,0 +1,58 @@
+.chatList{
+    --sendColor: #0b93f6;
+    --receiveColor: #e5e5ea;
+    --bg: #FFFFFF;
+  
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: auto;
+    padding: 0;
+    list-style: none;
+}
+
+.send, .receive{
+  position: relative;
+  max-width: 200px;
+  padding: 10px;
+}
+
+.send {
+    align-self: flex-end; 
+}
+
+.receive{
+    align-self: flex-start;
+}
+
+.send span, .receive span {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #666666;
+} 
+.send span {
+    justify-content: flex-end;
+} 
+
+.receive span {
+    justify-content: flex-start;
+}
+
+.send div, .receive div {
+    padding: 0.5rem;
+    font-size: 15px;
+    border-radius: 10px;
+}
+
+.send div {
+    color: #FFFFFF;
+    background: var(--sendColor);
+    margin-right: -0.3rem;
+}
+
+.receive div {
+    color: #333333;
+    background: var(--receiveColor);
+    margin-left: -0.3rem;
+}
